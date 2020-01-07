@@ -108,6 +108,7 @@ COMMON_SRC = \
             rx/sumh.c \
             rx/xbus.c \
             rx/fport.c \
+            rx/msp_and_sbus.c \
             sensors/acceleration.c \
             sensors/boardalignment.c \
             sensors/compass.c \

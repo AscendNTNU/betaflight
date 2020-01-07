@@ -66,6 +66,7 @@
 #include "rx/crsf.h"
 #include "rx/rx_spi.h"
 #include "rx/targetcustomserial.h"
+#include "rx/msp_and_sbus.h"
 
 
 const char rcChannelLetters[] = "AERT12345678abcdefgh";
@@ -290,6 +291,16 @@ void rxInit(void)
 #ifdef USE_RX_SPI
     if (featureIsEnabled(FEATURE_RX_SPI)) {
         const bool enabled = rxSpiInit(rxSpiConfig(), &rxRuntimeConfig);
+        if (!enabled) {
+            rxRuntimeConfig.rcReadRawFn = nullReadRawRC;
+            rxRuntimeConfig.rcFrameStatusFn = nullFrameStatus;
+        }
+    }
+#endif
+
+#ifdef USE_RX_MSP_AND_SBUS
+    if (featureIsEnabled(FEATURE_RX_MSP_AND_SBUS)) {
+        const bool enabled = rxMspAndSbusInit(rxConfig(), &rxRuntimeConfig);
         if (!enabled) {
             rxRuntimeConfig.rcReadRawFn = nullReadRawRC;
             rxRuntimeConfig.rcFrameStatusFn = nullFrameStatus;

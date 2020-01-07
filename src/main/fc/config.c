@@ -249,31 +249,37 @@ static void validateAndFixConfig(void)
 
     validateAndFixGyroConfig();
 
-    if (!(featureIsEnabled(FEATURE_RX_PARALLEL_PWM) || featureIsEnabled(FEATURE_RX_PPM) || featureIsEnabled(FEATURE_RX_SERIAL) || featureIsEnabled(FEATURE_RX_MSP) || featureIsEnabled(FEATURE_RX_SPI))) {
+    if (!(featureIsEnabled(FEATURE_RX_PARALLEL_PWM) || featureIsEnabled(FEATURE_RX_PPM) || featureIsEnabled(FEATURE_RX_SERIAL) || featureIsEnabled(FEATURE_RX_MSP) || featureIsEnabled(FEATURE_RX_SPI) || featureIsEnabled(FEATURE_RX_MSP_AND_SBUS))) {
         featureEnable(DEFAULT_RX_FEATURE);
     }
 
     if (featureIsEnabled(FEATURE_RX_PPM)) {
-        featureDisable(FEATURE_RX_SERIAL | FEATURE_RX_PARALLEL_PWM | FEATURE_RX_MSP | FEATURE_RX_SPI);
+        featureDisable(FEATURE_RX_SERIAL | FEATURE_RX_PARALLEL_PWM | FEATURE_RX_MSP | FEATURE_RX_SPI | FEATURE_RX_MSP_AND_SBUS);
     }
 
     if (featureIsEnabled(FEATURE_RX_MSP)) {
-        featureDisable(FEATURE_RX_SERIAL | FEATURE_RX_PARALLEL_PWM | FEATURE_RX_PPM | FEATURE_RX_SPI);
+        featureDisable(FEATURE_RX_SERIAL | FEATURE_RX_PARALLEL_PWM | FEATURE_RX_PPM | FEATURE_RX_SPI | FEATURE_RX_MSP_AND_SBUS);
     }
 
     if (featureIsEnabled(FEATURE_RX_SERIAL)) {
-        featureDisable(FEATURE_RX_PARALLEL_PWM | FEATURE_RX_MSP | FEATURE_RX_PPM | FEATURE_RX_SPI);
+        featureDisable(FEATURE_RX_PARALLEL_PWM | FEATURE_RX_MSP | FEATURE_RX_PPM | FEATURE_RX_SPI | FEATURE_RX_MSP_AND_SBUS);
     }
 
 #ifdef USE_RX_SPI
     if (featureIsEnabled(FEATURE_RX_SPI)) {
-        featureDisable(FEATURE_RX_SERIAL | FEATURE_RX_PARALLEL_PWM | FEATURE_RX_PPM | FEATURE_RX_MSP);
+        featureDisable(FEATURE_RX_SERIAL | FEATURE_RX_PARALLEL_PWM | FEATURE_RX_PPM | FEATURE_RX_MSP | FEATURE_RX_MSP_AND_SBUS);
     }
 #endif // USE_RX_SPI
 
     if (featureIsEnabled(FEATURE_RX_PARALLEL_PWM)) {
-        featureDisable(FEATURE_RX_SERIAL | FEATURE_RX_MSP | FEATURE_RX_PPM | FEATURE_RX_SPI);
+        featureDisable(FEATURE_RX_SERIAL | FEATURE_RX_MSP | FEATURE_RX_PPM | FEATURE_RX_SPI | FEATURE_RX_MSP_AND_SBUS);
     }
+
+#ifdef USE_RX_MSP_AND_SBUS
+    if (featureIsEnabled(FEATURE_RX_MSP_AND_SBUS)) {
+        featureDisable(FEATURE_RX_SERIAL | FEATURE_RX_PARALLEL_PWM | FEATURE_RX_MSP | FEATURE_RX_PPM | FEATURE_RX_SPI);
+    }
+#endif
 
 #ifdef USE_SOFTSPI
     if (featureIsEnabled(FEATURE_SOFTSPI)) {

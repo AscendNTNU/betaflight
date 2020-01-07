@@ -138,7 +138,7 @@ static void sbusDataReceive(uint16_t c, void *data)
     }
 }
 
-static uint8_t sbusFrameStatus(rxRuntimeConfig_t *rxRuntimeConfig)
+uint8_t sbusFrameStatus(rxRuntimeConfig_t *rxRuntimeConfig)
 {
     sbusFrameData_t *sbusFrameData = rxRuntimeConfig->frameData;
     if (!sbusFrameData->done) {

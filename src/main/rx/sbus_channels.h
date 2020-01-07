@@ -50,6 +50,8 @@ typedef struct sbusChannels_s {
 
 #define SBUS_CHANNEL_DATA_LENGTH sizeof(sbusChannels_t)
 
+uint16_t sbusChannelsReadRawRC(const rxRuntimeConfig_t *rxRuntimeConfig, uint8_t chan);
+
 uint8_t sbusChannelsDecode(rxRuntimeConfig_t *rxRuntimeConfig, const sbusChannels_t *channels);
 
 void sbusChannelsInit(const rxConfig_t *rxConfig, rxRuntimeConfig_t *rxRuntimeConfig);

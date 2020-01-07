@@ -303,3 +303,5 @@
 //#define USE_VTX_TABLE
 #endif
 
+#define USE_RX_MSP
+#define USE_RX_MSP_AND_SBUS
