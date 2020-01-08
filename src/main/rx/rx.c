@@ -300,7 +300,7 @@ void rxInit(void)
 
 #ifdef USE_RX_MSP_AND_SBUS
     if (featureIsEnabled(FEATURE_RX_MSP_AND_SBUS)) {
-        const bool enabled = rxMspAndSbusInit(rxConfig(), &rxRuntimeConfig);
+        const bool enabled = rxMspAndSbusInit(rxConfig(), mspAndSbusConfig(), &rxRuntimeConfig);
         if (!enabled) {
             rxRuntimeConfig.rcReadRawFn = nullReadRawRC;
             rxRuntimeConfig.rcFrameStatusFn = nullFrameStatus;

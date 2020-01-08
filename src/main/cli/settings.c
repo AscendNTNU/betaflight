@@ -82,6 +82,7 @@
 #include "pg/rx_pwm.h"
 #include "pg/rx_spi.h"
 #include "pg/rx_spi_cc2500.h"
+#include "pg/rx_msp_and_sbus.h"
 #include "pg/sdcard.h"
 #include "pg/vcd.h"
 #include "pg/usb.h"
@@ -1419,6 +1420,12 @@ const clivalue_t valueTable[] = {
 #ifdef USE_RX_FLYSKY
     { "flysky_spi_tx_id",       VAR_UINT32 | MASTER_VALUE, .config.u32Max = UINT32_MAX, PG_FLYSKY_CONFIG, offsetof(flySkyConfig_t, txId) },
     { "flysky_spi_rf_channels", VAR_UINT8 | MASTER_VALUE | MODE_ARRAY, .config.array.length = 16, PG_FLYSKY_CONFIG, offsetof(flySkyConfig_t, rfChannelMap) },
+#endif
+
+#ifdef USE_RX_MSP_AND_SBUS
+    { "offboard_chan", VAR_UINT8 | MASTER_VALUE, .config.minmaxUnsigned = {0, UINT8_MAX}, PG_RX_MSP_AND_SBUS_CONFIG, offsetof(mspAndSbusConfig_t, offboard_chan) },
+    { "offboard_threshold_l", VAR_UINT16 | MASTER_VALUE, .config.minmaxUnsigned = {0, UINT16_MAX}, PG_RX_MSP_AND_SBUS_CONFIG, offsetof(mspAndSbusConfig_t, offboard_threshold_l) },
+    { "offboard_threshold_h", VAR_UINT16 | MASTER_VALUE, .config.minmaxUnsigned = {0, UINT16_MAX}, PG_RX_MSP_AND_SBUS_CONFIG, offsetof(mspAndSbusConfig_t, offboard_threshold_h) }
 #endif
 };
 

@@ -47,40 +47,52 @@
 #include "rx/msp.h"
 #include "rx/msp_and_sbus.h"
 
-#ifndef MSP_AND_SBUS_OFFBOARD_CHAN
-#define MSP_AND_SBUS_OFFBOARD_CHAN 7
-#endif
-
+static uint8_t offboard_chan = 5;
+static uint16_t offboard_threshold_l = 1600;
+static uint16_t offboard_threshold_h = 2000;
 static bool offboard = false;
 
 static uint16_t rxMspAndSbusReadRawRC(const rxRuntimeConfig_t *rxRuntimeConfig, uint8_t chan)
 {
-    if (sbusChannelsReadRawRC(rxRuntimeConfig, MSP_AND_SBUS_OFFBOARD_CHAN) > 1500) {
+    uint16_t offboard_chan_value = sbusChannelsReadRawRC(rxRuntimeConfig, offboard_chan);
+
+    if (offboard_chan_value >= offboard_threshold_l && offboard_chan_value <= offboard_threshold_h) {
         offboard = true;
     }
     else {
         offboard = false;
     }
 
+    uint16_t sbus_value = sbusChannelsReadRawRC(rxRuntimeConfig, chan);
+    uint16_t msp_value = rxMspReadRawRC(rxRuntimeConfig, chan);
+
     if (offboard) {
-        return rxMspReadRawRC(rxRuntimeConfig, chan);
+        return msp_value;
     }
     else {
-        return sbusChannelsReadRawRC(rxRuntimeConfig, chan);
+        return sbus_value;
     }
 }
 
 static uint8_t rxMspAndSbusFrameStatus(rxRuntimeConfig_t *rxRuntimeConfig)
 {
+    uint8_t sbus_res = sbusFrameStatus(rxRuntimeConfig);
+    uint8_t msp_res = rxMspFrameStatus(rxRuntimeConfig);
+
     if (offboard) {
-        return rxMspFrameStatus(rxRuntimeConfig);
+        return msp_res;
     }
     else {
-        return sbusFrameStatus(rxRuntimeConfig);
+        return sbus_res;
     }
 }
 
-bool rxMspAndSbusInit(const rxConfig_t *rxConfig, rxRuntimeConfig_t *rxRuntimeConfig) {
+bool rxMspAndSbusInit(const rxConfig_t *rxConfig, const mspAndSbusConfig_t *mspAndSbusConfig, rxRuntimeConfig_t *rxRuntimeConfig)
+{
+    UNUSED(mspAndSbusConfig);
+    offboard_chan = mspAndSbusConfig->offboard_chan;
+    offboard_threshold_l = mspAndSbusConfig->offboard_threshold_l;
+    offboard_threshold_h = mspAndSbusConfig->offboard_threshold_h;
     rxMspInit(rxConfig, rxRuntimeConfig);
     sbusInit(rxConfig, rxRuntimeConfig);
 

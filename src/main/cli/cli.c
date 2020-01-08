@@ -139,6 +139,7 @@ extern uint8_t __config_end;
 #include "pg/rx_spi_cc2500.h"
 #include "pg/rx_spi.h"
 #include "pg/rx_pwm.h"
+#include "pg/rx_msp_and_sbus.h"
 #include "pg/serial_uart.h"
 #include "pg/sdio.h"
 #include "pg/timerio.h"
