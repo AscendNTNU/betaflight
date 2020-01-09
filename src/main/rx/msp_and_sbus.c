@@ -66,7 +66,7 @@ static uint16_t rxMspAndSbusReadRawRC(const rxRuntimeConfig_t *rxRuntimeConfig, 
     uint16_t sbus_value = sbusChannelsReadRawRC(rxRuntimeConfig, chan);
     uint16_t msp_value = rxMspReadRawRC(rxRuntimeConfig, chan);
 
-    if (offboard) {
+    if (chan != offboard_chan && offboard) {
         return msp_value;
     }
     else {
